@@ -31,5 +31,8 @@ class Main
 
 		var IT = new OTetromino();
 		trace(IT.getShape().length);
+		
+		var PF = new PlayingField();
+		PF.hasLanded();
     }
 }
