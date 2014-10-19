@@ -13,6 +13,7 @@ class Tetromino
 	private var topLeftY:Int;
 	private var potentialTopLeftX:Int;
 	private var potentialTopLeftY:Int;
+	private var potentialShape:Int;
 	
 	
 	public function new() {
@@ -21,7 +22,13 @@ class Tetromino
 		topLeftY = 0;
 		potentialTopLeftX = topLeftX;
 		potentialTopLeftY = topLeftY;
+		potentialShape = shape;
 		numberOfRotations = 4;
+	}
+	
+	public function PotentialCollision () {
+		potentialTopLeftX = topLeftX;
+		potentialTopLeftY = topLeftY;
 	}
 	
 	public function PotentialFall() {
@@ -36,16 +43,18 @@ class Tetromino
 		potentialTopLeftX--;
 	}
 	
-	public function MoveRight() {
-		topLeftX++;
+	public function PotentialRotate() {
+		potentialShape++;
+		potentialShape = potentialShape % numberOfRotations;
 	}
 	
-	public function MoveLeft() {
-		topLeftX--;
+	public function GetPotentialShape() {
+		return rotation[potentialShape];
 	}
 	
-	public function Fall() {
-		topLeftY++;
+	public function Move() {
+		topLeftX = potentialTopLeftX;
+		topLeftY = potentialTopLeftY;
 	}
 	
 	public function getPotentialX() {
@@ -65,8 +74,7 @@ class Tetromino
 	}
 	
 	public function rotate() {
-		shape++;
-		shape = shape % numberOfRotations;
+		shape = potentialShape;
 	}
 	
 	public function getShape() :Array<Array<Int>> {
