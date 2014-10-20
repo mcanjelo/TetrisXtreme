@@ -39,7 +39,7 @@ class Tetromino
 		potentialTopLeftX++;
 	}
 	
-	public function PotentialmMoveLeft() {
+	public function PotentialMoveLeft() {
 		potentialTopLeftX--;
 	}
 	

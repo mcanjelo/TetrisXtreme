@@ -1,11 +1,15 @@
 package urgame;
+import flambe.Component;
+import flambe.Disposer;
+import flambe.Entity;
+import flambe.System;
 import haxe.macro.Expr.Var;
 
 /**
  * ...
  * @author Mc
  */
-class PlayingField
+class PlayingField extends Component
 {
 	private var landed:Array<Array<Int>>;
 	private var curPiece:Tetromino;
@@ -28,7 +32,21 @@ class PlayingField
 				  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 				  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
 				  
-			NewPiece();
+				  Registry._Disposer = new Disposer();
+
+	}
+
+	
+	override public function onAdded() 
+	{
+		super.onAdded();
+		this.owner.add(Registry._Disposer);
+		Registry._Disposer.add(System.keyboard.down.connect(ChangeDirection));
+		NewPiece();
+		Registry.Go.connect(function() {
+			curPiece.PotentialFall();
+			LandDetection();
+		}
 	}
 	
 	public function CollisionDetection() {
@@ -43,6 +61,21 @@ class PlayingField
 					//collision on right side of playing field
 					curPiece.PotentialCollision();
 				}
+				if (landed[row + curPiece.getPotentialY()] != 0] &&
+					landed[col + curPiece.getPotentialY()] != 0]) {
+					//collision on object (land)
+					curPiece.PotentialCollision();
+				}
+			}
+		}
+		
+		curPiece.Move();
+	}
+	
+	public function LandDetection() {
+		var curShape:Array<Array<Int>> = curPiece.getShape();
+		for (row in 0...curShape.length) {
+			for (col in 0...curShape[row].length) {
 				if (row + curPiece.getPotentialY() >= landed.length) {
 					//collision on bottom side of playing field (land)
 					Land();
@@ -92,7 +125,7 @@ class PlayingField
 			for (col in 0...curShape[row].length) {
 				if (curShape[row][col] != 0) {
 					landed[row + curPiece.getY][col + curPiece.getX] = curShape[row][col];
-					NewPiece();
+					NewPiece();0
 				}
 			}
 		}
@@ -118,6 +151,25 @@ class PlayingField
 			case 6: curPiece = new ZTetronimo();
 					break;
 			default: break;
+		}
+	}
+	
+	public function ChangeDirection(event:KeyboardEvent) {
+		if (event.key == Key.Up) {
+			curPiece.PotentialRotate();
+			RotationHandling();
+		}
+		else if (event.key == Key.Down) {
+			curPiece.PotentialFall();
+			LandDetection();
+		}
+		else if (event.key == Key.Right) {
+			curPiece.PotentialMoveRight();
+			CollisionDetection();
+		}
+		else if (event.key == Key.Left) {
+			curPiece.PotentialMoveLeft();
+			CollisionDetection();
 		}
 	}
 	
