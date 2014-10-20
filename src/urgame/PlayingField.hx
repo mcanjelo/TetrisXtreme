@@ -13,11 +13,10 @@ import haxe.macro.Expr.Var;
  */
 class PlayingField extends Component
 {
-	private var landed:Array<Array<Int>>;
 	private var curPiece:Tetromino;
 	
 	public function new() {
-		landed = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		Registry.landed = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 				  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 				  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 				  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -59,11 +58,11 @@ class PlayingField extends Component
 					//collision on left side of playing field
 					curPiece.PotentialCollision();
 				}
-				if (col + curPiece.getPotentialX() >= landed[0].length) {
+				if (col + curPiece.getPotentialX() >= Registry.landed[0].length) {
 					//collision on right side of playing field
 					curPiece.PotentialCollision();
 				}
-				if (landed[row + curPiece.getPotentialY()][col + curPiece.getPotentialY()] != 0) {
+				if (Registry.landed[row + curPiece.getPotentialY()][col + curPiece.getPotentialY()] != 0) {
 					//collision on object (land)
 					curPiece.PotentialCollision();
 				}
@@ -77,11 +76,11 @@ class PlayingField extends Component
 		var curShape:Array<Array<Int>> = curPiece.getShape();
 		for (row in 0...curShape.length) {
 			for (col in 0...curShape[row].length) {
-				if (row + curPiece.getPotentialY() >= landed.length) {
+				if (row + curPiece.getPotentialY() >= Registry.landed.length) {
 					//collision on bottom side of playing field (land)
 					Land();
 				}
-				if (landed[row + curPiece.getPotentialY()][col + curPiece.getPotentialY()] != 0) {
+				if (Registry.landed[row + curPiece.getPotentialY()][col + curPiece.getPotentialY()] != 0) {
 					//collision on object (land)
 					Land();
 				}
@@ -99,15 +98,15 @@ class PlayingField extends Component
 					//collision on left side of playing field (dont rotate)
 					curPiece.PotentialCollision();
 				}
-				if (col + curPiece.getPotentialX() >= landed[0].length) {
+				if (col + curPiece.getPotentialX() >= Registry.landed[0].length) {
 					//collision on right side of playing field (dont rotate)
 					curPiece.PotentialCollision();
 				}
-				if (row + curPiece.getPotentialY() >= landed.length) {
+				if (row + curPiece.getPotentialY() >= Registry.landed.length) {
 					//collision on bottom side of playing field (dont rotate)
 					curPiece.PotentialCollision();
 				}
-				if (landed[row + curPiece.getPotentialY()][col + curPiece.getPotentialY()] != 0) {
+				if (Registry.landed[row + curPiece.getPotentialY()][col + curPiece.getPotentialY()] != 0) {
 					//collision on object (dont rotate)
 					curPiece.PotentialCollision();
 				}
@@ -123,7 +122,7 @@ class PlayingField extends Component
 		for (row in 0...curShape.length) {
 			for (col in 0...curShape[row].length) {
 				if (curShape[row][col] != 0) {
-					landed[row + curPiece.getY()][col + curPiece.getX()] = curShape[row][col];
+					Registry.landed[row + curPiece.getY()][col + curPiece.getX()] = curShape[row][col];
 					NewPiece();
 				}
 			}

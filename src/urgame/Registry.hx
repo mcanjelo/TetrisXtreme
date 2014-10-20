@@ -12,5 +12,5 @@ class Registry
 	static public var Go: Signal0;
 	static public var pack: AssetPack;
 	static public var _Disposer: Disposer;
-	
+	static public var landed:Array<Array<Int>>;
 }
