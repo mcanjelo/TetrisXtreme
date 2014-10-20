@@ -1,27 +1,27 @@
-package urgame;
+package Tetromino;
 
 /**
  * ...
  * @author Mc
  */
-class JTetrominio extends Tetromino
+class LTetromino extends Tetromino
 {
 
 	public function new() 
 	{
 		super();
-		rotation = [[[1, 0, 0], //1
+		rotation = [[[0, 0, 1], //1
 					 [1, 1, 1],
 					 [0, 0, 0]],
-					[[0, 1, 1],//2
+					[[0, 1, 0],//2
 					 [0, 1, 0],
-					 [0, 1, 0]],
+					 [0, 1, 1]],
 					[[0, 0, 0], //3
 					 [1, 1, 1],
-					 [0, 0, 1]],
-					[[0, 1, 0], //4
+					 [1, 0, 0]],
+					[[1, 1, 0], //4
 					 [0, 1, 0],
-					 [1, 1, 0]]];
+					 [0, 1, 0]]];
 	}
 	
 }

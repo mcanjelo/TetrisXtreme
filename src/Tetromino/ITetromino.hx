@@ -1,5 +1,5 @@
-package urgame;
-import urgame.Tetromino;
+package Tetromino;
+import Tetromino.Tetromino;
 
 /**
  * ...
