@@ -28,11 +28,7 @@ class Main
 		background.x._ = System.stage.width / 2;
 		background.y._ = System.stage.height / 2;
         System.root.addChild(new Entity().add(background));
-
-		var IT = new OTetromino();
-		trace(IT.getShape().length);
 		
 		var PF = new PlayingField();
-		PF.hasLanded();
     }
 }

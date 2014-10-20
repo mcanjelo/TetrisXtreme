@@ -2,7 +2,9 @@ package urgame;
 import flambe.Component;
 import flambe.Disposer;
 import flambe.Entity;
+import flambe.input.KeyboardEvent;
 import flambe.System;
+import flambe.input.Key;
 import haxe.macro.Expr.Var;
 
 /**
@@ -46,14 +48,14 @@ class PlayingField extends Component
 		Registry.Go.connect(function() {
 			curPiece.PotentialFall();
 			LandDetection();
-		}
+		});
 	}
 	
 	public function CollisionDetection() {
 		var curShape:Array<Array<Int>> = curPiece.getShape();
 		for (row in 0...curShape.length) {
 			for (col in 0...curShape[row].length) {
-				if (col + curPiece.getPotentialX < 0) {
+				if (col + curPiece.getPotentialX() < 0) {
 					//collision on left side of playing field
 					curPiece.PotentialCollision();
 				}
@@ -61,8 +63,7 @@ class PlayingField extends Component
 					//collision on right side of playing field
 					curPiece.PotentialCollision();
 				}
-				if (landed[row + curPiece.getPotentialY()] != 0] &&
-					landed[col + curPiece.getPotentialY()] != 0]) {
+				if (landed[row + curPiece.getPotentialY()][col + curPiece.getPotentialY()] != 0) {
 					//collision on object (land)
 					curPiece.PotentialCollision();
 				}
@@ -80,8 +81,7 @@ class PlayingField extends Component
 					//collision on bottom side of playing field (land)
 					Land();
 				}
-				if (landed[row + curPiece.getPotentialY()] != 0] &&
-					landed[col + curPiece.getPotentialY()] != 0]) {
+				if (landed[row + curPiece.getPotentialY()][col + curPiece.getPotentialY()] != 0) {
 					//collision on object (land)
 					Land();
 				}
@@ -95,7 +95,7 @@ class PlayingField extends Component
 		var curShape:Array<Array<Int>> = curPiece.GetPotentialShape();
 		for (row in 0...curShape.length) {
 			for (col in 0...curShape[row].length) {
-				if (col + curPiece.getPotentialX < 0) {
+				if (col + curPiece.getPotentialX() < 0) {
 					//collision on left side of playing field (dont rotate)
 					curPiece.PotentialCollision();
 				}
@@ -107,8 +107,7 @@ class PlayingField extends Component
 					//collision on bottom side of playing field (dont rotate)
 					curPiece.PotentialCollision();
 				}
-				if (landed[row + curPiece.getPotentialY()] != 0] &&
-					landed[col + curPiece.getPotentialY()] != 0]) {
+				if (landed[row + curPiece.getPotentialY()][col + curPiece.getPotentialY()] != 0) {
 					//collision on object (dont rotate)
 					curPiece.PotentialCollision();
 				}
@@ -124,8 +123,8 @@ class PlayingField extends Component
 		for (row in 0...curShape.length) {
 			for (col in 0...curShape[row].length) {
 				if (curShape[row][col] != 0) {
-					landed[row + curPiece.getY][col + curPiece.getX] = curShape[row][col];
-					NewPiece();0
+					landed[row + curPiece.getY()][col + curPiece.getX()] = curShape[row][col];
+					NewPiece();
 				}
 			}
 		}
@@ -137,20 +136,12 @@ class PlayingField extends Component
 		randTet = Std.random(7);
 		switch(randTet) {
 			case 0: curPiece = new ITetromino();
-					break;
 			case 1: curPiece = new JTetrominio();
-					break;
 			case 2: curPiece = new LTetromino();
-					break;
 			case 3: curPiece = new OTetromino();
-					break;
 			case 4: curPiece = new STetromino();
-					break;
 			case 5: curPiece = new TTetromino();
-					break;
 			case 6: curPiece = new ZTetronimo();
-					break;
-			default: break;
 		}
 	}
 	

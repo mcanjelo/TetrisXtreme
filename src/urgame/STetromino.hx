@@ -4,11 +4,12 @@ package urgame;
  * ...
  * @author Mc
  */
-class STetromino
+class STetromino extends Tetromino
 {
 
 	public function new() 
 	{
+		super();
 		rotation = [[[0, 1, 1], //1
 					 [1, 1, 0],
 					 [0, 0, 0]],
@@ -20,7 +21,7 @@ class STetromino
 					 [0, 0, 0]],
 					[[0, 1, 1], //4
 					 [1, 1, 0],
-					 [0, 0, 0]]]];
+					 [0, 0, 0]]];
 	}
 	
 }

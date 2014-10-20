@@ -4,11 +4,12 @@ package urgame;
  * ...
  * @author Mc
  */
-class ZTetronimo
+class ZTetronimo extends Tetromino
 {
 
 	public function new() 
 	{
+		super();
 		rotation = [[[1, 1, 0], //1
 					 [0, 1, 1],
 					 [0, 0, 0]],
