@@ -5,7 +5,7 @@ import flambe.util.Signal0;
 class Timer extends Component
 {
 	private var Time:Float;
-
+	private var MoveTime:Float;
 	
 	public function new() {
 		Registry.Go = new Signal0();

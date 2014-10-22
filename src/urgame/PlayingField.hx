@@ -20,7 +20,10 @@ import tetromino.ZTetronimo;
  */
 class PlayingField extends Component
 {
-	
+	private var rightKeyDown:Bool;
+	private var leftKeyDown:Bool;
+	private var downKeyDown:Bool;
+	private var MoveTime:Float;
 	
 	public function new() {
 		Registry.landed = [[1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -50,9 +53,11 @@ class PlayingField extends Component
 		super.onAdded();
 		this.owner.add(Registry._Disposer);
 		Registry._Disposer.add(System.keyboard.down.connect(ChangeDirection));
+		Registry._Disposer.add(System.keyboard.up.connect(ReleaseChangeDirection));
 		NewPiece();
 		trace(Registry.landed.length);
 		Registry.Go.connect(function() {
+			Movement();
 			if(Registry.curPiece != null) {
 			Registry.curPiece.PotentialFall();
 			if (LandDetection())
@@ -60,7 +65,27 @@ class PlayingField extends Component
 			else
 				Registry.curPiece.Move();
 			}
+			
 		});
+		
+	}
+	
+	public function Movement() {
+		if (downKeyDown) {
+			Registry.curPiece.PotentialFall();
+			if (LandDetection())
+				Land();
+			else
+				Registry.curPiece.Move();
+		}
+		if (rightKeyDown) {
+			Registry.curPiece.PotentialMoveRight();
+			CollisionDetection();
+		}
+		else if (leftKeyDown) {
+			Registry.curPiece.PotentialMoveLeft();
+			CollisionDetection();
+		}
 	}
 	
 	public function CollisionDetection() {
@@ -153,6 +178,7 @@ class PlayingField extends Component
 	{
 		super.onUpdate(dt);
 		ClearLines();
+		MoveTime+= dt;
 	}
 	
 	public function ClearLines() {
@@ -192,6 +218,7 @@ class PlayingField extends Component
 			RotationHandling();
 		}
 		else if (event.key == Key.Down) {
+			downKeyDown = true;
 			Registry.curPiece.PotentialFall();
 			if (LandDetection())
 				Land();
@@ -199,12 +226,26 @@ class PlayingField extends Component
 				Registry.curPiece.Move();
 		}
 		else if (event.key == Key.Right) {
+			rightKeyDown = true;
 			Registry.curPiece.PotentialMoveRight();
 			CollisionDetection();
 		}
 		else if (event.key == Key.Left) {
+			leftKeyDown = true;
 			Registry.curPiece.PotentialMoveLeft();
 			CollisionDetection();
+		}
+	}
+	
+	public function ReleaseChangeDirection(event:KeyboardEvent) {
+		if (event.key == Key.Down) {
+			rightKeyDown = false;
+		}
+		else if (event.key == Key.Right) {
+			rightKeyDown = false;
+		}
+		else if (event.key == Key.Left) {
+			leftKeyDown = false;
 		}
 	}
 	

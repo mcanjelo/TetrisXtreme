@@ -29,6 +29,7 @@ class Tetromino
 	public function PotentialCollision () {
 		potentialTopLeftX = topLeftX;
 		potentialTopLeftY = topLeftY;
+		potentialShape = shape;
 	}
 	
 	public function PotentialFall() {
