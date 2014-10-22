@@ -10,6 +10,7 @@ import tetromino.Tetromino;
  */
 class Registry
 {
+	static public var Pack: AssetPack;
 	static public var Go: Signal0;
 	static public var pack: AssetPack;
 	static public var _Disposer: Disposer;

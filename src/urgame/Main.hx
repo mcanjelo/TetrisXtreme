@@ -15,7 +15,7 @@ class Main
         System.init();
 
         // Load up the compiled pack in the assets directory named "bootstrap"
-        var manifest = Manifest.fromAssets("bootstrap");
+        var manifest = Manifest.fromAssets("blocks");
         var loader = System.loadAssetPack(manifest);
         loader.get(onSuccess);
     }
@@ -27,6 +27,8 @@ class Main
 		background.centerAnchor();
 		background.x._ = System.stage.width / 2;
 		background.y._ = System.stage.height / 2;
+		
+		Registry.pack = pack;
 		
 		var PF = new PlayingField();
 		System.root.addChild(new Entity().add(new Timer()).add(PF));
