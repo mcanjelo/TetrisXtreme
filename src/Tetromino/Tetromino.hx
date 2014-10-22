@@ -1,4 +1,4 @@
-package Tetromino;
+package tetromino;
 
 /**
  * ...
@@ -80,4 +80,5 @@ class Tetromino
 	public function getShape() :Array<Array<Int>> {
 		return rotation[shape];
 	}
+	
 }

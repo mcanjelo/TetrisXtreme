@@ -6,6 +6,13 @@ import flambe.input.KeyboardEvent;
 import flambe.System;
 import flambe.input.Key;
 import haxe.macro.Expr.Var;
+import tetromino.ITetromino;
+import tetromino.JTetrominio;
+import tetromino.LTetromino;
+import tetromino.OTetromino;
+import tetromino.STetromino;
+import tetromino.TTetromino;
+import tetromino.ZTetronimo;
 
 /**
  * ...
@@ -13,10 +20,10 @@ import haxe.macro.Expr.Var;
  */
 class PlayingField extends Component
 {
-	private var curPiece:Tetromino;
+	
 	
 	public function new() {
-		Registry.landed = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		Registry.landed = [[1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 				  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 				  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 				  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -31,7 +38,7 @@ class PlayingField extends Component
 				  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 				  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 				  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-				  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
+				  [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]];
 				  
 				  Registry._Disposer = new Disposer();
 
@@ -44,88 +51,123 @@ class PlayingField extends Component
 		this.owner.add(Registry._Disposer);
 		Registry._Disposer.add(System.keyboard.down.connect(ChangeDirection));
 		NewPiece();
+		trace(Registry.landed.length);
 		Registry.Go.connect(function() {
-			curPiece.PotentialFall();
-			LandDetection();
+			if(Registry.curPiece != null) {
+			Registry.curPiece.PotentialFall();
+			if (LandDetection())
+				Land();
+			else
+				Registry.curPiece.Move();
+			}
 		});
 	}
 	
 	public function CollisionDetection() {
-		var curShape:Array<Array<Int>> = curPiece.getShape();
+		var curShape:Array<Array<Int>> = Registry.curPiece.getShape();
 		for (row in 0...curShape.length) {
 			for (col in 0...curShape[row].length) {
-				if (col + curPiece.getPotentialX() < 0) {
-					//collision on left side of playing field
-					curPiece.PotentialCollision();
-				}
-				if (col + curPiece.getPotentialX() >= Registry.landed[0].length) {
-					//collision on right side of playing field
-					curPiece.PotentialCollision();
-				}
-				if (Registry.landed[row + curPiece.getPotentialY()][col + curPiece.getPotentialY()] != 0) {
-					//collision on object (land)
-					curPiece.PotentialCollision();
+				if (curShape[row][col] != 0) {
+					if (col + Registry.curPiece.getPotentialX() < 0) {
+						//collision on left side of playing field
+						Registry.curPiece.PotentialCollision();
+					}
+					if (col + Registry.curPiece.getPotentialX() >= Registry.landed[0].length) {
+						//collision on right side of playing field
+						Registry.curPiece.PotentialCollision();
+					}
+					if (Registry.landed[row + Registry.curPiece.getPotentialY()][col + Registry.curPiece.getPotentialX()] != 0) {
+						//collision on object (land)
+						Registry.curPiece.PotentialCollision();
+					}
 				}
 			}
 		}
 		
-		curPiece.Move();
+		Registry.curPiece.Move();
 	}
 	
 	public function LandDetection() {
-		var curShape:Array<Array<Int>> = curPiece.getShape();
+		var curShape:Array<Array<Int>> = Registry.curPiece.getShape();
 		for (row in 0...curShape.length) {
 			for (col in 0...curShape[row].length) {
-				if (row + curPiece.getPotentialY() >= Registry.landed.length) {
-					//collision on bottom side of playing field (land)
-					Land();
-				}
-				if (Registry.landed[row + curPiece.getPotentialY()][col + curPiece.getPotentialY()] != 0) {
-					//collision on object (land)
-					Land();
+				if (curShape[row][col] != 0) {
+					if (row + Registry.curPiece.getPotentialY() >= Registry.landed.length) {
+						//collision on bottom side of playing field (land)
+						return true;
+					}
+					if (Registry.landed[row + Registry.curPiece.getPotentialY()][col + Registry.curPiece.getPotentialX()] != 0) {
+						//collision on object (land)
+						return true;
+					}
 				}
 			}
 		}
 		
-		curPiece.Move();
+		return false;
 	}
 	
 	public function RotationHandling() {
-		var curShape:Array<Array<Int>> = curPiece.GetPotentialShape();
+		var curShape:Array<Array<Int>> = Registry.curPiece.GetPotentialShape();
 		for (row in 0...curShape.length) {
 			for (col in 0...curShape[row].length) {
-				if (col + curPiece.getPotentialX() < 0) {
-					//collision on left side of playing field (dont rotate)
-					curPiece.PotentialCollision();
-				}
-				if (col + curPiece.getPotentialX() >= Registry.landed[0].length) {
-					//collision on right side of playing field (dont rotate)
-					curPiece.PotentialCollision();
-				}
-				if (row + curPiece.getPotentialY() >= Registry.landed.length) {
-					//collision on bottom side of playing field (dont rotate)
-					curPiece.PotentialCollision();
-				}
-				if (Registry.landed[row + curPiece.getPotentialY()][col + curPiece.getPotentialY()] != 0) {
-					//collision on object (dont rotate)
-					curPiece.PotentialCollision();
+				if (curShape[row][col] != 0) {
+					if (col + Registry.curPiece.getPotentialX() < 0) {
+						//collision on left side of playing field (dont rotate)
+						Registry.curPiece.PotentialCollision();
+					}
+					if (col + Registry.curPiece.getPotentialX() >= Registry.landed[0].length) {
+						//collision on right side of playing field (dont rotate)
+						Registry.curPiece.PotentialCollision();
+					}
+					if (row + Registry.curPiece.getPotentialY() >= Registry.landed.length) {
+						//collision on bottom side of playing field (dont rotate)
+						Registry.curPiece.PotentialCollision();
+					}
+					if (Registry.landed[row + Registry.curPiece.getPotentialY()][col + Registry.curPiece.getPotentialX()] != 0) {
+						//collision on object (dont rotate)
+						Registry.curPiece.PotentialCollision();
+					}
 				}
 			}
 		}
 		
-		curPiece.rotate();
+		Registry.curPiece.rotate();
 	}
 	
 	
 	public function Land() {
-		var curShape:Array<Array<Int>> = curPiece.getShape();
+		var curShape:Array<Array<Int>> = Registry.curPiece.getShape();
 		for (row in 0...curShape.length) {
 			for (col in 0...curShape[row].length) {
 				if (curShape[row][col] != 0) {
-					Registry.landed[row + curPiece.getY()][col + curPiece.getX()] = curShape[row][col];
-					NewPiece();
+					Registry.landed[row + Registry.curPiece.getY()][col + Registry.curPiece.getX()] = curShape[row][col];
+					
 				}
 			}
+		}
+		NewPiece();	
+	}
+	
+	override public function onUpdate(dt:Float) 
+	{
+		super.onUpdate(dt);
+		ClearLines();
+	}
+	
+	public function ClearLines() {
+		var isFilled = true;
+		for (row in 0...Registry.landed.length) {
+			for (col in 0...Registry.landed[row].length) {
+				if (Registry.landed[row][col] == 0)
+					isFilled = false;
+			}
+			if (isFilled) {
+				Registry.landed.splice(row, 1);
+				Registry.landed.unshift([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+				trace("clear line" + row);
+			}
+			isFilled = true;
 		}
 	}
 	
@@ -134,31 +176,34 @@ class PlayingField extends Component
 		
 		randTet = Std.random(7);
 		switch(randTet) {
-			case 0: curPiece = new ITetromino();
-			case 1: curPiece = new JTetrominio();
-			case 2: curPiece = new LTetromino();
-			case 3: curPiece = new OTetromino();
-			case 4: curPiece = new STetromino();
-			case 5: curPiece = new TTetromino();
-			case 6: curPiece = new ZTetronimo();
+			case 0: Registry.curPiece = new ITetromino();
+			case 1: Registry.curPiece = new JTetrominio();
+			case 2: Registry.curPiece = new LTetromino();
+			case 3: Registry.curPiece = new OTetromino();
+			case 4: Registry.curPiece = new STetromino();
+			case 5: Registry.curPiece = new TTetromino();
+			case 6: Registry.curPiece = new ZTetronimo();
 		}
 	}
 	
 	public function ChangeDirection(event:KeyboardEvent) {
 		if (event.key == Key.Up) {
-			curPiece.PotentialRotate();
+			Registry.curPiece.PotentialRotate();
 			RotationHandling();
 		}
 		else if (event.key == Key.Down) {
-			curPiece.PotentialFall();
-			LandDetection();
+			Registry.curPiece.PotentialFall();
+			if (LandDetection())
+				Land();
+			else
+				Registry.curPiece.Move();
 		}
 		else if (event.key == Key.Right) {
-			curPiece.PotentialMoveRight();
+			Registry.curPiece.PotentialMoveRight();
 			CollisionDetection();
 		}
 		else if (event.key == Key.Left) {
-			curPiece.PotentialMoveLeft();
+			Registry.curPiece.PotentialMoveLeft();
 			CollisionDetection();
 		}
 	}

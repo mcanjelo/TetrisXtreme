@@ -1,5 +1,5 @@
-package Tetromino;
-import Tetromino.Tetromino;
+package tetromino;
+import tetromino.Tetromino;
 
 /**
  * ...

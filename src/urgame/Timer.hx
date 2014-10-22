@@ -21,7 +21,7 @@ class Timer extends Component
 	{
 		super.onUpdate(dt);
 		Time+= dt;
-		if (Time > 0.1)
+		if (Time > 0.5)
 		{
 			Registry.Go.emit();
 			Time = 0;

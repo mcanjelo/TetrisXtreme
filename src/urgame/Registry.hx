@@ -2,6 +2,7 @@ package urgame;
 import flambe.asset.AssetPack;
 import flambe.Disposer;
 import flambe.util.Signal0;
+import tetromino.Tetromino;
 
 /**
  * ...
@@ -13,4 +14,5 @@ class Registry
 	static public var pack: AssetPack;
 	static public var _Disposer: Disposer;
 	static public var landed:Array<Array<Int>>;
+	static public var curPiece:Tetromino;
 }

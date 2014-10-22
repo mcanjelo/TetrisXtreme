@@ -27,8 +27,9 @@ class Main
 		background.centerAnchor();
 		background.x._ = System.stage.width / 2;
 		background.y._ = System.stage.height / 2;
-        System.root.addChild(new Entity().add(background));
 		
 		var PF = new PlayingField();
+		System.root.addChild(new Entity().add(new Timer()).add(PF));
+        System.root.addChild(new Entity().add(background).add(new Renderer()));
     }
 }

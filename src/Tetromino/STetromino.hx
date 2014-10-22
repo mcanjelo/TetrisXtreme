@@ -1,4 +1,4 @@
-package Tetromino;
+package tetromino;
 
 /**
  * ...
