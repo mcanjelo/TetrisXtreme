@@ -211,7 +211,7 @@ class PlayingField extends Component
 		for (row in 0...curShape.length) {
 			for (col in 0...curShape[row].length) {
 				if (curShape[row][col] != 0) {
-					Registry.landed[row + Registry.curPiece.getY()][col + Registry.curPiece.getX()] = curShape[row][col];
+					Registry.landed[row + Registry.curPiece.getY()][col + Registry.curPiece.getX()] = 1;
 					
 				}
 			}
@@ -227,7 +227,7 @@ class PlayingField extends Component
 		for (row in 0...curShape.length) {
 			for (col in 0...curShape[row].length) {
 				if (curShape[row][col] != 0) {
-					Registry.landed[row + dropY][col + Registry.curPiece.getX()] = curShape[row][col];
+					Registry.landed[row + dropY][col + Registry.curPiece.getX()] = 1;
 					
 				}
 			}

@@ -14,6 +14,7 @@ class Tetromino
 	private var potentialTopLeftX:Int;
 	private var potentialTopLeftY:Int;
 	private var potentialShape:Int;
+	private var TetType:Int;
 	
 	
 	public function new() {
@@ -26,6 +27,9 @@ class Tetromino
 		numberOfRotations = 4;
 	}
 	
+	public function getTetType() {
+		return TetType;
+	}
 	
 	public function reset() {
 		shape = 0;
