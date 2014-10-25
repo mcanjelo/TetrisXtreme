@@ -23,7 +23,7 @@ class Main
     private static function onSuccess (pack :AssetPack)
     {
         // Add a solid color background
-        var background = new FillSprite(0xFFFFFF, 800, 600);
+        var background = new ImageSprite(pack.getTexture("playing screen"));
 		background.centerAnchor();
 		background.x._ = System.stage.width / 2;
 		background.y._ = System.stage.height / 2;

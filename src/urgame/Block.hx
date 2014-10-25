@@ -20,7 +20,7 @@ class Block extends ImageSprite
 	override public function onAdded() 
 	{
 		super.onAdded();
-		this.setXY(32 * myx , 32 * myy);
+		this.setXY(150 + 30 * myx , 194 + 30 * myy);
 	}
 	
 }

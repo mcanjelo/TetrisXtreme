@@ -16,4 +16,7 @@ class Registry
 	static public var _Disposer: Disposer;
 	static public var landed:Array<Array<Int>>;
 	static public var curPiece:Tetromino;
+	static public var score:Int;
+	static public var hold:Tetromino;
+	static public var cycle:Array<Int>;
 }

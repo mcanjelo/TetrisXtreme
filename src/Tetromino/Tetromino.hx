@@ -26,6 +26,17 @@ class Tetromino
 		numberOfRotations = 4;
 	}
 	
+	
+	public function reset() {
+		shape = 0;
+		topLeftX = 4;
+		topLeftY = 0;
+		potentialTopLeftX = topLeftX;
+		potentialTopLeftY = topLeftY;
+		potentialShape = shape;
+		numberOfRotations = 4;
+	}
+	
 	public function PotentialCollision () {
 		potentialTopLeftX = topLeftX;
 		potentialTopLeftY = topLeftY;
